@@ -1,0 +1,6 @@
+[Defines]
+  DEC_SPECIFICATION              = 0x00010005
+  PACKAGE_NAME                   = PciToolPkg
+  PACKAGE_GUID                   = 6987936E-ED34-44db-AE97-1FA5E4ED2A99
+  PACKAGE_VERSION                = 0.1
+
