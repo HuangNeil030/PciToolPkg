@@ -103,16 +103,12 @@ build -p PciToolPkg\PciToolPkg.dsc -a X64 -t VS2019 -b DEBUG
 * **多功能判斷**: 讀取 Header Type (Offset 0x0E)，若 Bit 7 為 1，則繼續掃描 Func 1-7。
 * **Class Code 讀取**: 讀取 Offset 0x08，並透過位元位移 (Shift) 取出 Base Class 與 Sub Class。
 
-
-
 ### 2. 名稱解析：`VendorName` & `GetFullClassName`
 
 * **用途**: 將冰冷的 ID 轉換為人類可讀的字串。
 * **實作方式**:
 * **查表法 (Lookup Table)**: 建立 `gVendorTable` 結構陣列，遍歷比對 ID。
 * **Switch-Case**: 針對 Class Code 使用兩層 `switch` (先判斷 Base，再判斷 Sub)，以回傳最精確的字串 (如 `Storage (NVMe)` vs `Storage (SATA)`).
-
-
 
 ### 3. 畫面繪製：`DrawDeviceList`
 
@@ -121,16 +117,12 @@ build -p PciToolPkg\PciToolPkg.dsc -a X64 -t VS2019 -b DEBUG
 * **分頁捲動 (Scrolling)**: 利用 `StartRow` 與 `MaxRows` 控制顯示範圍，當 `gListIndex` 超出範圍時自動調整 `StartRow`。
 * **高亮 (Highlight)**: 透過 `gST->ConOut->SetAttribute` 切換背景顏色 (綠底黑字) 來標示當前選中的項目。
 
-
-
 ### 4. 畫面繪製：`DrawDumpView`
 
 * **用途**: 顯示 Hex Dump 網格。
 * **UI 技巧**:
 * **動態寬度**: 根據 `gWidth` 決定 `Pci.Read` 的參數與 `Print` 的格式 (`%02X`, `%04X`, `%08X`)。
 * **游標繪製**: 在迴圈中判斷 `CurrentAddr == gTargetOffset`，若成立則改變背景色 (青色)，實現「游標」效果。
-
-
 
 ### 5. 寫入執行：`ExecuteWrite`
 
@@ -141,8 +133,6 @@ build -p PciToolPkg\PciToolPkg.dsc -a X64 -t VS2019 -b DEBUG
 3. `gPciIo->Pci.Write`: 呼叫 UEFI Protocol 執行實際寫入。
 4. 寫入後自動切換回 `STATE_VIEW_DUMP`，因為畫面重繪時會重新讀取硬體，使用者能立刻看到結果。
 
-
-
 ### 6. 主程式：`ShellAppMain` (狀態機)
 
 * **設計模式**: **State Machine (狀態機)**。
@@ -150,8 +140,6 @@ build -p PciToolPkg\PciToolPkg.dsc -a X64 -t VS2019 -b DEBUG
 * 使用 `while(TRUE)` 進行主迴圈。
 * 使用 `gBS->WaitForEvent` 等待按鍵 (避免吃滿 CPU)。
 * 使用 `switch(gState)` 區分不同模式下的按鍵反應 (例如：在列表模式下 `Enter` 是進入，在寫入模式下 `Enter` 是確認)。
-
-
 
 ---
 
@@ -164,9 +152,6 @@ build -p PciToolPkg\PciToolPkg.dsc -a X64 -t VS2019 -b DEBUG
 
 ---
 
-> **Note**: 本工具僅供學習與調試使用。隨意寫入 PCI Config Space 可能導致系統不穩定或當機，請在虛擬機或測試機上使用。
-
----
 cd /d D:\BIOS\MyWorkSpace\edk2
 
 edksetup.bat Rebuild
